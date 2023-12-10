@@ -1,68 +1,107 @@
-player={
-    x=0,
-    y=0,
-    build_ani={1,2},
-    nobuild_ani={3,4},
-    buildable={33,52},
-    sprite=1,
+player = {
+    x = 0,
+    y = 0,
+    buildable_cursor_tiles = { 1, 2 },
+    not_buildable_cursor_tiles = { 3, 4 },
+    buildable_tiles = { 33, 52 },
+    cursor_sprite = 1,
     current_frame = 1,
     frame_duration = 0.25,
     last_frame_time = 0,
+    build_mode = false,
+    resources = 10,
+    health = 100,
 
-    update=function()
+    update = function()
         local dx, dy = 0, 0
 
         if btnp(⬅️) then
-            dx=-8
+            dx = -tile_size
         end
         if btnp(➡️) then
-            dx+=8
+            dx += tile_size
         end
         if btnp(⬆️) then
-            dy+=-8
+            dy += -tile_size
         end
         if btnp(⬇️) then
-            dy+=8
+            dy += tile_size
         end
         if btnp(❎) then
-            dy+=-8
+            player.toggle_build_mode()
         end
         if btnp(🅾️) then
-            dy+=8
+            dy += tile_size
         end
 
-        if player.can_move(player.x + dx, player.y + dy) then
-            player.x=player.x + dx
-            player.y=player.y + dy
-        end
-
-        if player.can_build() then
-            player.sprite = player.build_ani[player.current_frame]
+        if player.build_mode then
+            player.move_build_mode(dx, dy)
         else
-            player.sprite = player.nobuild_ani[player.current_frame]
-        end
-
-        if time() - player.last_frame_time >= player.frame_duration then
-            player.current_frame = (player.current_frame % 2) + 1
-            player.last_frame_time = time()
+            player.move(dx, dy)
+            player.animate()
         end
     end,
 
-    draw=function()
-        spr(player.sprite,player.x,player.y)
+    draw = function()
+        if player.build_mode then
+            rectfill(8, 8, 120, 120, 1)
+        end
+        spr(player.cursor_sprite, player.x, player.y)
+
+        print("✽" .. player.resources, 1, 1, 1)
+        print("♥" .. player.health, 108, 1, 1)
     end,
 
-    can_build=function()
-        local tile_value = mget(player.x / 8, player.y / 8)
-        for i = 1, #player.buildable do
-            if tile_value == player.buildable[i] then
+    can_build = function()
+        local tile_value = mget(player.x / tile_size, player.y / tile_size)
+        for i = 1, #player.buildable_tiles do
+            if tile_value == player.buildable_tiles[i] then
                 return true
             end
         end
         return false
     end,
 
-    can_move=function(x, y)
-        return x >= 0 and x < 128 and y >= 0 and y < 128
+    can_move = function(x, y)
+        if x >= 0 and x < screen_size and y >= 0 and y < screen_size then
+            return true
+        else
+            sfx(0)
+            return false
+        end
+    end,
+
+    move = function(dx, dy)
+        if player.can_move(player.x + dx, player.y + dy) then
+            player.x = player.x + dx
+            player.y = player.y + dy
+        end
+    end,
+
+    animate = function()
+        if player.can_build() then
+            player.cursor_sprite = player.buildable_cursor_tiles[player.current_frame]
+        else
+            player.cursor_sprite = player.not_buildable_cursor_tiles[player.current_frame]
+        end
+
+        if time() - player.last_frame_time >= player.frame_duration then
+            player.current_frame = player.current_frame % 2 + 1
+            player.last_frame_time = time()
+        end
+    end,
+
+    move_build_mode = function(dx, dy)
+        -- Implement specific build mode movement logic here
+        player.move(dx, dy)
+        -- For now, just move like regular movement
+    end,
+
+    toggle_build_mode = function()
+        if player.can_build() then
+            player.build_mode = not player.build_mode
+        else
+            sfx(0)
+        end
     end
 }

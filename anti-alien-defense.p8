@@ -4,6 +4,8 @@ __lua__
 #include player.lua
 
 function _init()
+    tile_size=8
+    screen_size=128
 end
 
 function _update60()
@@ -14,6 +16,8 @@ function _draw()
 	cls()
     map()
 	player.draw()
+
+    -- rectfill(8, 8, 120, 120, 1)
 end
 __gfx__
 00000000770000770077770088000088008888000000000000000000000000000000000000000000000000000000000000000000111111112222222233333333
