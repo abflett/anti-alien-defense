@@ -28,10 +28,10 @@ player = {
             dy += tile_size
         end
         if btnp(❎) then
-            player.toggle_build_mode()
+            player.enter_build_mode()
         end
         if btnp(🅾️) then
-            dy += tile_size
+            player.build_mode = false
         end
 
         if player.build_mode then
@@ -97,9 +97,9 @@ player = {
         -- For now, just move like regular movement
     end,
 
-    toggle_build_mode = function()
+    enter_build_mode = function()
         if player.can_build() then
-            player.build_mode = not player.build_mode
+            player.build_mode = true
         else
             sfx(0)
         end
