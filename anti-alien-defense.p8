@@ -1,13 +1,17 @@
 pico-8 cartridge // http://www.pico-8.com
 version 41
 __lua__
-#include player.lua
 #include game_state.lua
+#include player.lua
+#include intro.lua
+#include main_menu.lua
+#include game_play.lua
+#include game_over.lua
+
 
 function _init()
     tile_size=8
     screen_size=128
-    player = create_player();
 end
 
 function _update60()
@@ -15,7 +19,6 @@ function _update60()
 end
 
 function _draw()
-    map()
 	game_state:draw()
 end
 __gfx__

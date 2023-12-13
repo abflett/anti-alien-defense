@@ -9,25 +9,25 @@ game_state = {
     current_state = states.game_play,
     update = function(self)
         if self.current_state == states.intro then
-            print("update intro")
+            intro:update()
         elseif self.current_state == states.main_menu then
-            print("update main_menu")
+            main_menu:update()
         elseif self.current_state == states.game_play then
-            player:update()
+            game_play:update()
         elseif self.current_state == states.game_over then
-            print("update game_over")
+            game_over:update()
         end
     end,
     draw = function(self)
         cls()
         if self.current_state == states.intro then
-            print("draw intro")
+            intro:draw()
         elseif self.current_state == states.main_menu then
-            print("draw main_menu")
+            main_menu:draw()
         elseif self.current_state == states.game_play then
-            player:draw()
+            game_play:draw()
         elseif self.current_state == states.game_over then
-            print("draw game_over")
+            game_over:draw()
         end
     end,
     change_state = function(self, state)
