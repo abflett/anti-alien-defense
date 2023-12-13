@@ -8,6 +8,7 @@ __lua__
 #include game_play.lua
 #include game_over.lua
 
+global=_ENV
 
 function _init()
     tile_size=8

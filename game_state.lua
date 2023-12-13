@@ -19,7 +19,6 @@ game_state = {
         end
     end,
     draw = function(self)
-        cls()
         if self.current_state == states.intro then
             intro:draw()
         elseif self.current_state == states.main_menu then

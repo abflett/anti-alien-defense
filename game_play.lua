@@ -1,9 +1,32 @@
+game_play_states = {
+    idle = "idle",
+    build = "build",
+    update = "update"
+}
+
 game_play = {
+    player = create_player(),
+    current_state = game_play_states.idle,
+
     update = function(self)
-        player:update()
+        if self.current_state == game_play_states.idle then
+            self.player:update()
+        elseif self.current_state == game_play_states.build then
+            -- update
+        elseif self.current_state == game_play_states.update then
+            -- update
+        end
     end,
     draw = function(self)
+        cls()
         map()
-        player:draw()
+
+        if self.current_state == game_play_states.idle then
+            self.player:draw()
+        elseif self.current_state == game_play_states.build then
+            -- draw
+        elseif self.current_state == game_play_states.update then
+            -- draw
+        end
     end
 }
