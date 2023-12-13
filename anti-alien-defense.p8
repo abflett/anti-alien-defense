@@ -1,14 +1,13 @@
 pico-8 cartridge // http://www.pico-8.com
 version 41
 __lua__
+#include entity.lua
 #include game_state.lua
 #include player.lua
 #include intro.lua
 #include main_menu.lua
 #include game_play.lua
 #include game_over.lua
-
-global=_ENV
 
 function _init()
     tile_size=8

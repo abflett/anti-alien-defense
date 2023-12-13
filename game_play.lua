@@ -5,7 +5,7 @@ game_play_states = {
 }
 
 game_play = {
-    player = create_player(),
+    player = player:new(),
     current_state = game_play_states.idle,
 
     update = function(self)
